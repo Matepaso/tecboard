@@ -5,9 +5,9 @@ export default function ClientList() {
 
   // Dados mockados - substitua por chamada API real em produção
   const client = [
-    { id: 1, name: 'Produto A', price: 'R$ 99,90', category: 'Eletrônicos' },
-    { id: 2, name: 'Produto B', price: 'R$ 149,90', category: 'Roupas' },
-    { id: 3, name: 'Produto C', price: 'R$ 29,90', category: 'Alimentos' },
+    { id: 1, name: 'Maria Souza', tpPessoa: 'Fisica', cpf: '410.771.068-82' },
+    { id: 2, name: 'Carlos Oliveira', tpPessoa: 'Fisica', cpf: '477.300.548-33' },
+    { id: 3, name: 'Pedro Santos', tpPessoa: 'Juridica', cpf: '13.671.311/0001-24' },
   ];
 
   return (
@@ -73,21 +73,21 @@ export default function ClientList() {
             }}>
               <th style={{ padding: '12px 15px', textAlign: 'left' }}>Nome</th>
               <th style={{ padding: '12px 15px', textAlign: 'left' }}>Tipo Pessoa</th>
-              <th style={{ padding: '12px 15px', textAlign: 'left' }}>Categoria</th>
+              <th style={{ padding: '12px 15px', textAlign: 'left' }}>CPF/CNPJ</th>
               <th style={{ padding: '12px 15px', textAlign: 'left' }}>Ações</th>
             </tr>
           </thead>
           <tbody>
-            {client.map(product => (
-              <tr key={product.id} style={{
+            {client.map(client => (
+              <tr key={client.id} style={{
                 borderBottom: '1px solid #eee',
                 ':hover': {
                   backgroundColor: '#f9f9f9',
                 },
               }}>
-                <td style={{ padding: '12px 15px' }}>{product.name}</td>
-                <td style={{ padding: '12px 15px' }}>{product.price}</td>
-                <td style={{ padding: '12px 15px' }}>{product.category}</td>
+                <td style={{ padding: '12px 15px' }}>{client.name}</td>
+                <td style={{ padding: '12px 15px' }}>{client.tpPessoa}</td>
+                <td style={{ padding: '12px 15px' }}>{client.cpf}</td>
                 <td style={{ padding: '12px 15px' }}>
                   <button style={{
                     padding: '6px 12px',
