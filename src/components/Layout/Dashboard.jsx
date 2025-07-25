@@ -89,7 +89,7 @@ function Dashboard() {
             {[
               { icon: '📊', name: 'Dashboard', id: 'dashboard' },
               { icon: '📦', name: 'Produtos', id: 'products', action: () => navigate('/products') },
-              { icon: '🧑', name: 'Clientes', id: 'customers' },
+              { icon: '🧑', name: 'Clientes', id: 'customers', action: () => navigate('/client') },
               { icon: '💰', name: 'Vendas', id: 'sales' },
               { icon: '💲', name: 'Financas', id: 'financial', hasDropdown: true },
               { icon: '📝', name: 'Relatórios', id: 'reports' },
