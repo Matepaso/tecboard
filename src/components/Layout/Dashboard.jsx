@@ -1,5 +1,7 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ThemeContext } from '../Context/ThemeContext';
+import { createContext, useState, useContext } from 'react';
+
 
 
 function Dashboard() {
@@ -7,10 +9,18 @@ function Dashboard() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const navigate = useNavigate();
   const [openFinancial, setOpenFinancial] = useState(false);
+  const { theme, toggleDarkMode } = useContext(ThemeContext);
+
+
+
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+
+
+
 
   // Dados de exemplo
   const metrics = [
@@ -34,16 +44,8 @@ function Dashboard() {
     { name: 'Balanço', id: 'balance', action: () => navigate('/financial/balance') },
   ];
 
-  const handleItemClick = (item) => {
-    if (item.id === 'financial') {
-      setOpenFinancial(!openFinancial); // Alterna o dropdown de Finanças
-    } else if (item.action) {
-      item.action();
-    } else {
-      setActiveTab(item.id);
-      setOpenFinancial(false); // Fecha o dropdown se outro item for clicado
-    }
-  };
+
+
   return (
     <div style={{
       display: 'flex',
@@ -53,8 +55,8 @@ function Dashboard() {
       {/* Sidebar */}
       <div style={{
         width: isSidebarOpen ? '250px' : '50px',
-        backgroundColor: '#2c3e50',
-        color: 'white',
+        backgroundColor: theme.sidebarBg,
+        color: theme.textColor,
         transition: 'width 0.3s ease',
         padding: '20px 10px',
         overflow: 'hidden',
@@ -71,7 +73,8 @@ function Dashboard() {
             style={{
               background: 'none',
               border: 'none',
-              color: 'white',
+
+              color: theme.textColor,
               cursor: 'pointer',
               fontSize: '20px',
             }}
@@ -110,7 +113,7 @@ function Dashboard() {
                   style={{
                     width: '100%',
                     textAlign: 'left',
-                    color: 'white',
+                    color: theme.textColor,
                     background: activeTab === item.id ? '#34495e' : 'transparent',
                     border: 'none',
                     cursor: 'pointer',
@@ -179,7 +182,8 @@ function Dashboard() {
       <div style={{
         flex: 1,
         padding: '20px',
-        backgroundColor: '#f5f6fa',
+        backgroundColor: theme.contentBg,
+
         overflowY: 'auto',
       }}>
         <header style={{
@@ -188,12 +192,27 @@ function Dashboard() {
           alignItems: 'center',
           marginBottom: '30px',
         }}>
-          <h1 style={{ color: '#2c3e50' }}>
+          <button
+            onClick={toggleDarkMode}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '20px',
+              padding: '8px',
+              borderRadius: '50%',
+              backgroundColor: theme.contentBg,
+            }}
+          >
+            {theme.isDarkMode ? '☀️' : '🌙'}
+          </button>
+          <h1 style={{ color: theme.textColor }}>
             {activeTab === 'dashboard' && 'Visão Geral'}
             {activeTab === 'customers' && 'Clientes'}
             {activeTab === 'sales' && 'Vendas'}
             {activeTab === 'reports' && 'Relatórios'}
             {activeTab === 'settings' && 'Configurações'}
+            {activeTab === 'login' && 'Entrar'}
           </h1>
 
           <div style={{
@@ -230,19 +249,20 @@ function Dashboard() {
               alignItems: 'center',
               gap: '10px',
             }}>
-              <div style={{
+              <button id='login' style={{
                 width: '40px',
                 height: '40px',
                 borderRadius: '50%',
-                backgroundColor: '#3498db',
+                backgroundColor: 'blue',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'white',
+                color: theme.textColor,
                 fontWeight: 'bold',
-              }}>JS</div>
-              {isSidebarOpen && <span>John Smith</span>}
+              }}>JS</button>
+              {isSidebarOpen && <span style={{ color: theme.textColor, }}>John Smith</span>}
             </div>
+
           </div>
         </header>
 
@@ -252,12 +272,13 @@ function Dashboard() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              
               gap: '20px',
               marginBottom: '30px',
             }}>
               {metrics.map((metric, index) => (
                 <div key={index} style={{
-                  backgroundColor: 'white',
+                  backgroundColor: theme.sidebarBg,
                   borderRadius: '10px',
                   padding: '20px',
                   boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
@@ -265,14 +286,14 @@ function Dashboard() {
                   <h3 style={{
                     marginTop: '0',
                     marginBottom: '10px',
-                    color: '#7f8c8d',
+                    color: theme.textColor,
                     fontSize: '14px',
                   }}>{metric.title}</h3>
                   <p style={{
                     margin: '0',
                     fontSize: '24px',
                     fontWeight: 'bold',
-                    color: '#2c3e50',
+                    color: theme.textColor,
                   }}>{metric.value}</p>
                   <div style={{
                     display: 'flex',
@@ -288,7 +309,7 @@ function Dashboard() {
 
             {/* Gráfico (simulado) */}
             <div style={{
-              backgroundColor: 'white',
+              backgroundColor: theme.sidebarBg,
               borderRadius: '10px',
               padding: '20px',
               boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
@@ -305,14 +326,14 @@ function Dashboard() {
 
             {/* Tabela de pedidos recentes */}
             <div style={{
-              backgroundColor: 'white',
+              backgroundColor: theme.sidebarBg,
               borderRadius: '10px',
               padding: '20px',
               boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
             }}>
               <h2 style={{
                 marginTop: '0',
-                color: '#2c3e50',
+                color: theme.textColor,
               }}>Pedidos Recentes</h2>
 
               <div style={{ overflowX: 'auto' }}>
@@ -324,11 +345,11 @@ function Dashboard() {
                     <tr style={{
                       borderBottom: '1px solid #ecf0f1',
                     }}>
-                      <th style={{ textAlign: 'left', padding: '12px 15px', color: '#7f8c8d' }}>ID</th>
-                      <th style={{ textAlign: 'left', padding: '12px 15px', color: '#7f8c8d' }}>Cliente</th>
-                      <th style={{ textAlign: 'left', padding: '12px 15px', color: '#7f8c8d' }}>Data</th>
-                      <th style={{ textAlign: 'left', padding: '12px 15px', color: '#7f8c8d' }}>Valor</th>
-                      <th style={{ textAlign: 'left', padding: '12px 15px', color: '#7f8c8d' }}>Status</th>
+                      <th style={{ textAlign: 'left', padding: '12px 15px', color: theme.textColor }}>ID</th>
+                      <th style={{ textAlign: 'left', padding: '12px 15px', color: theme.textColor }}>Cliente</th>
+                      <th style={{ textAlign: 'left', padding: '12px 15px', color: theme.textColor }}>Data</th>
+                      <th style={{ textAlign: 'left', padding: '12px 15px', color: theme.textColor }}>Valor</th>
+                      <th style={{ textAlign: 'left', padding: '12px 15px', color: theme.textColor }}>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -336,13 +357,13 @@ function Dashboard() {
                       <tr key={index} style={{
                         borderBottom: '1px solid #ecf0f1',
                         ':hover': {
-                          backgroundColor: '#f5f6fa',
+                          backgroundColor: theme.contentBg,
                         },
                       }}>
-                        <td style={{ padding: '12px 15px' }}>{order.id}</td>
-                        <td style={{ padding: '12px 15px' }}>{order.customer}</td>
-                        <td style={{ padding: '12px 15px' }}>{order.date}</td>
-                        <td style={{ padding: '12px 15px' }}>{order.amount}</td>
+                        <td style={{ padding: '12px 15px', color: theme.textColor }}>{order.id}</td>
+                        <td style={{ padding: '12px 15px', color: theme.textColor }}>{order.customer}</td>
+                        <td style={{ padding: '12px 15px', color: theme.textColor }}>{order.date}</td>
+                        <td style={{ padding: '12px 15px', color: theme.textColor }}>{order.amount}</td>
                         <td style={{ padding: '12px 15px' }}>
                           <span style={{
                             padding: '5px 10px',
@@ -371,10 +392,7 @@ function Dashboard() {
             </div>
           </>
         )}
-
-
-
-        {activeTab === 'customers' && (
+        {activeTab === 'login' && (
           <div style={{
             backgroundColor: 'white',
             borderRadius: '10px',
@@ -383,10 +401,11 @@ function Dashboard() {
             textAlign: 'center',
             color: '#7f8c8d',
           }}>
-            <h2>Página de Clientes</h2>
-            <p>Aqui você gerenciaria seus clientes</p>
+            <h2>Página de Produtos</h2>
+            <p>Aqui você gerenciaria seus produtos cadastrados</p>
           </div>
         )}
+
 
         {/* Outras páginas teriam conteúdo similar */}
       </div>

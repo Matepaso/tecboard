@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../Context/useTheme';
 
 export default function ClientForm() {
     const navigate = useNavigate();
+    const { theme, toggleDarkMode } = useTheme();
     const [client, setClient] = useState({
         name: '',
         CPF: '',
@@ -39,90 +41,101 @@ export default function ClientForm() {
 
     return (
         <div style={{
-            backgroundColor: 'white',
-            borderRadius: '10px',
-            padding: '30px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-            maxWidth: '800px',
-            margin: '20px auto',
-            display: 'grid',
-
+            backgroundColor: theme.contentBg,
+            color: theme.textColor,
+            border: theme.borderColor,
+            display: 'flex',
+            height: '100vh',
+            fontFamily: 'Arial, sans-serif',
         }}>
             <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '30px',
-                borderBottom: '1px solid #eee',
-                paddingBottom: '15px',
-            }}>
-                <h2 style={{ margin: 0, color: '#2c3e50' }}>Cadastrar Novo Cliente</h2>
-                <button
-                    onClick={() => navigate('/client')}
-                    style={{
-                        padding: '8px 16px',
-                        backgroundColor: '#f5f6fa',
-                        color: '#7f8c8d',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    Voltar
-                </button>
-            </div>
+                width: '1200px',
+                backgroundColor: theme.sidebarBg,
+                borderRadius: '10px',
+                padding: '30px',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                maxWidth: '1200px',
+                margin: '20px auto',
+                display: 'grid',
 
-            <form onSubmit={handleSubmit}>
+            }}>
                 <div style={{
                     display: 'flex',
-                    alignItems: 'flex-start', // Alinha os itens no topo
-                    gap: '220px',
-                    marginBottom: '20px',
-                    maxWidth: '800px'
-
-                    // Garante que o container ocupe toda a largura
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '30px',
+                    borderBottom: '1px solid #eee',
+                    paddingBottom: '15px',
                 }}>
-                    <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
-                            Nome
-                        </label>
-                        <input
-                            type="text"
-                            name="name"
-                            value={client.name}
-                            onChange={handleChange}
-                            style={{
-                                width: '200%',
-                                padding: '10px',
-                                border: '1px solid #ddd',
-                                borderRadius: '4px',
-                            }}
-                        />
-                    </div>
-
-                    <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
-                            Tipo de pessoa
-                        </label>
-                        <select
-                            name="tpPessoa"
-                            value={client.tpPessoa}
-                            onChange={handleChange}
-                            style={{
-                                width: '150%',
-                                padding: '10px',
-                                border: '1px solid #ddd',
-                                borderRadius: '4px',
-                            }}
-                        >
-                            <option value="">Selecione um tipo de pessoa</option>
-                            {tpPessoa.map((cat, index) => (
-                                <option key={index} value={cat}>{cat}</option>
-                            ))}
-                        </select>
-                    </div>
-
+                    <h2 style={{ margin: 0 }}>Cadastrar Novo Cliente</h2>
+                    <button
+                        onClick={() => navigate('/client')}
+                        style={{
+                            padding: '8px 16px',
+                            backgroundColor: '#f5f6fa',
+                            color: '#7f8c8d',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Voltar
+                    </button>
                 </div>
+
+                <form onSubmit={handleSubmit}>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'flex-start', // Alinha os itens no topo
+                        gap: '400px',
+                        marginBottom: '20px',
+                        maxWidth: '800px'
+
+                        // Garante que o container ocupe toda a largura
+                    }}>
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+                                Nome
+                            </label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={client.name}
+                                onChange={handleChange}
+                                style={{
+                                    width: '300%',
+                                    padding: '10px',
+
+                                    border: '1px solid #ddd',
+                                    borderRadius: '4px',
+                                }}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+                                Tipo de pessoa
+                            </label>
+                            <select
+                                name="tpPessoa"
+                                value={client.tpPessoa}
+                                onChange={handleChange}
+                                style={{
+                                    width: '300%',
+                                    padding: '10px',
+                                    border: '1px solid #ddd',
+                                    borderRadius: '4px',
+
+                                }}
+                            >
+                                <option value="">Selecione um tipo de pessoa</option>
+                                {tpPessoa.map((cat, index) => (
+                                    <option key={index} value={cat}>{cat}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                    </div>
                     <div style={{ marginBottom: '20px' }}>
                         <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
                             CPF/CNPJ
@@ -165,61 +178,62 @@ export default function ClientForm() {
                     </div>
 
 
-                
-                <div style={{ marginBottom: '20px' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
-                        Endereco
-                    </label>
-                    <input
-                        type="text"
-                        name="endereco"
-                        value={client.endereco}
-                        onChange={handleChange}
-                        step="0.01"
+
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+                            Endereco
+                        </label>
+                        <input
+                            type="text"
+                            name="endereco"
+                            value={client.endereco}
+                            onChange={handleChange}
+                            step="0.01"
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                border: '1px solid #ddd',
+                                borderRadius: '4px',
+                            }}
+                        />
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+                            cidade
+                        </label>
+                        <input
+                            type="text"
+                            name="cidade"
+                            value={client.cidade}
+                            onChange={handleChange}
+                            step="0.01"
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                border: '1px solid #ddd',
+                                borderRadius: '4px',
+                            }}
+                        />
+                    </div>
+
+
+
+
+                    <button
+                        type="submit"
                         style={{
-                            width: '100%',
-                            padding: '10px',
-                            border: '1px solid #ddd',
+                            padding: '10px 20px',
+                            backgroundColor: '#2ecc71',
+                            color: 'white',
+                            border: 'none',
                             borderRadius: '4px',
+                            cursor: 'pointer',
                         }}
-                    />
-                </div>
-                <div style={{ marginBottom: '20px' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
-                        cidade
-                    </label>
-                    <input
-                        type="text"
-                        name="cidade"
-                        value={client.cidade}
-                        onChange={handleChange}
-                        step="0.01"
-                        style={{
-                            width: '100%',
-                            padding: '10px',
-                            border: '1px solid #ddd',
-                            borderRadius: '4px',
-                        }}
-                    />
-                </div>
-
-
-
-
-                <button
-                    type="submit"
-                    style={{
-                        padding: '10px 20px',
-                        backgroundColor: '#2ecc71',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    Salvar Produto
-                </button>
-            </form>
+                    >
+                        Salvar Produto
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }
